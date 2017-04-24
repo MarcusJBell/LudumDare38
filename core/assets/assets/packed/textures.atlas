@@ -4,24 +4,327 @@ size: 256,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+Blobenemy_Pulsing
+  rotate: false
+  xy: 2, 2
+  size: 15, 15
+  orig: 20, 25
+  offset: 2, 4
+  index: 0
+Blobenemy_Pulsing
+  rotate: false
+  xy: 186, 241
+  size: 17, 13
+  orig: 20, 25
+  offset: 1, 5
+  index: 3
+Blobenemy_Pulsing
+  rotate: false
+  xy: 46, 92
+  size: 13, 15
+  orig: 20, 25
+  offset: 3, 4
+  index: 1
+Blobenemy_Pulsing
+  rotate: false
+  xy: 205, 241
+  size: 15, 13
+  orig: 20, 25
+  offset: 2, 5
+  index: 2
+Cannonball
+  rotate: false
+  xy: 39, 82
+  size: 5, 5
+  orig: 80, 100
+  offset: 26, 80
+  index: -1
+Cannonturret
+  rotate: false
+  xy: 164, 223
+  size: 12, 11
+  orig: 80, 100
+  offset: 4, 75
+  index: -1
+Coin
+  rotate: false
+  xy: 148, 159
+  size: 11, 17
+  orig: 20, 25
+  offset: 3, 1
+  index: -1
+Coin_Sheen
+  rotate: false
+  xy: 148, 159
+  size: 11, 17
+  orig: 20, 25
+  offset: 3, 1
+  index: 4
+Coin_Sheen
+  rotate: false
+  xy: 148, 159
+  size: 11, 17
+  orig: 20, 25
+  offset: 3, 1
+  index: 7
+Coin_Sheen
+  rotate: false
+  xy: 148, 159
+  size: 11, 17
+  orig: 20, 25
+  offset: 3, 1
+  index: 5
+Coin_Sheen
+  rotate: false
+  xy: 148, 159
+  size: 11, 17
+  orig: 20, 25
+  offset: 3, 1
+  index: 6
+Coin_Sheen
+  rotate: false
+  xy: 148, 140
+  size: 11, 17
+  orig: 20, 25
+  offset: 3, 1
+  index: 0
+Coin_Sheen
+  rotate: false
+  xy: 24, 51
+  size: 11, 17
+  orig: 20, 25
+  offset: 3, 1
+  index: 1
+Coin_Sheen
+  rotate: false
+  xy: 222, 237
+  size: 11, 17
+  orig: 20, 25
+  offset: 3, 1
+  index: 2
+Coin_Sheen
+  rotate: false
+  xy: 235, 237
+  size: 11, 17
+  orig: 20, 25
+  offset: 3, 1
+  index: 3
+Eyeturretbullet
+  rotate: false
+  xy: 70, 114
+  size: 17, 5
+  orig: 80, 100
+  offset: 1, 84
+  index: -1
+Healthbar
+  rotate: false
+  xy: 2, 109
+  size: 66, 10
+  split: 3, 3, 4, 4
+  pad: 0, 63, 0, 0
+  orig: 66, 10
+  offset: 0, 0
+  index: -1
+Purpleblob
+  rotate: false
+  xy: 137, 178
+  size: 11, 23
+  orig: 20, 25
+  offset: 4, 0
+  index: 2
+Purpleblob
+  rotate: false
+  xy: 137, 153
+  size: 9, 23
+  orig: 20, 25
+  offset: 5, 0
+  index: 1
+Purpleblob
+  rotate: false
+  xy: 150, 178
+  size: 7, 23
+  orig: 20, 25
+  offset: 6, 0
+  index: 3
+Purpleblob
+  rotate: false
+  xy: 15, 46
+  size: 7, 19
+  orig: 20, 25
+  offset: 6, 2
+  index: 0
+Spikeanimation
+  rotate: false
+  xy: 137, 132
+  size: 9, 19
+  orig: 20, 25
+  offset: 5, 0
+  index: 5
+Spikeanimation
+  rotate: false
+  xy: 137, 132
+  size: 9, 19
+  orig: 20, 25
+  offset: 5, 0
+  index: 6
+Spikeanimation
+  rotate: false
+  xy: 137, 132
+  size: 9, 19
+  orig: 20, 25
+  offset: 5, 0
+  index: 7
+Spikeanimation
+  rotate: false
+  xy: 159, 206
+  size: 9, 15
+  orig: 20, 25
+  offset: 5, 0
+  index: 4
+Spikeanimation
+  rotate: false
+  xy: 159, 181
+  size: 9, 10
+  orig: 20, 25
+  offset: 5, 0
+  index: 3
+Spikeanimation
+  rotate: false
+  xy: 61, 98
+  size: 7, 9
+  orig: 20, 25
+  offset: 6, 0
+  index: 8
+Spikeanimation
+  rotate: false
+  xy: 137, 123
+  size: 7, 7
+  orig: 20, 25
+  offset: 6, 0
+  index: 1
+Spikeanimation
+  rotate: false
+  xy: 148, 133
+  size: 7, 5
+  orig: 20, 25
+  offset: 6, 0
+  index: 2
+Spikeanimation
+  rotate: false
+  xy: 46, 87
+  size: 7, 3
+  orig: 20, 25
+  offset: 6, 0
+  index: 0
+Spikeanimation
+  rotate: false
+  xy: 46, 87
+  size: 7, 3
+  orig: 20, 25
+  offset: 6, 0
+  index: 9
+Spiketurret
+  rotate: false
+  xy: 24, 70
+  size: 13, 17
+  orig: 80, 100
+  offset: 3, 75
+  index: -1
+Star1
+  rotate: false
+  xy: 15, 41
+  size: 3, 3
+  orig: 80, 100
+  offset: 8, 85
+  index: -1
+Star2
+  rotate: false
+  xy: 24, 46
+  size: 3, 3
+  orig: 80, 100
+  offset: 28, 85
+  index: -1
+Star3
+  rotate: false
+  xy: 159, 193
+  size: 11, 11
+  orig: 80, 100
+  offset: 44, 80
+  index: -1
+Star4
+  rotate: false
+  xy: 186, 236
+  size: 3, 3
+  orig: 80, 100
+  offset: 68, 84
+  index: -1
+Star5
+  rotate: false
+  xy: 159, 178
+  size: 1, 1
+  orig: 80, 100
+  offset: 9, 62
+  index: -1
+Teslabeam
+  rotate: false
+  xy: 137, 203
+  size: 20, 18
+  orig: 20, 25
+  offset: 0, 5
+  index: 0
+Teslabeam
+  rotate: false
+  xy: 164, 236
+  size: 20, 18
+  orig: 20, 25
+  offset: 0, 6
+  index: 1
+Teslabeam
+  rotate: false
+  xy: 2, 67
+  size: 20, 18
+  orig: 20, 25
+  offset: 0, 6
+  index: 2
+Teslabeam
+  rotate: false
+  xy: 24, 89
+  size: 20, 18
+  orig: 20, 25
+  offset: 0, 5
+  index: 3
 core
   rotate: false
-  xy: 137, 148
+  xy: 2, 87
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
+eyeturret
+  rotate: false
+  xy: 2, 42
+  size: 11, 23
+  orig: 80, 100
+  offset: 4, 75
+  index: -1
 planet
   rotate: false
-  xy: 2, 35
+  xy: 2, 121
   size: 133, 133
   orig: 133, 133
   offset: 0, 0
   index: -1
 planetcore
   rotate: false
-  xy: 2, 2
+  xy: 137, 223
   size: 25, 31
   orig: 225, 225
   offset: 99, 162
+  index: -1
+tesla
+  rotate: false
+  xy: 2, 19
+  size: 11, 21
+  orig: 225, 225
+  offset: 125, 177
   index: -1

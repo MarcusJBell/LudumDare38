@@ -18,6 +18,7 @@ public class DesktopLauncher {
 		TexturePacker.Settings settings = new TexturePacker.Settings();
 		settings.stripWhitespaceX = true;
 		settings.stripWhitespaceY = true;
+		settings.useIndexes = true;
 		TexturePacker.process(settings, ".", "assets/packed", "textures");
 	}
 

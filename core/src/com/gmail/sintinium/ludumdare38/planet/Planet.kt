@@ -12,11 +12,13 @@ var renderScale = 4f
 
 class Planet(var batch: SpriteBatch) {
 
-    var texture = game.textureAtlas.findRegion(Game.PLANET)
+    var texture = game.textureAtlas.findRegion(Game.PLANET)!!
     var position = Vector2()
+    var centerPosition = Vector2()
 
     fun resize() {
         position.set(Gdx.graphics.width / 2f - planetRadius, Gdx.graphics.height / 2f - planetRadius)
+        centerPosition.set(Gdx.graphics.width / 2f, Gdx.graphics.height / 2f)
     }
 
     fun render(deltaTime: Float) {
