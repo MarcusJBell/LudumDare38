@@ -9,4 +9,6 @@ class DirectionComponent : Component() {
      */
     var direction = 1f
 
+    var slowDownScale = 1f
+
 }

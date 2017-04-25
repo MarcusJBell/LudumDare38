@@ -8,7 +8,7 @@ import com.gmail.sintinium.ludumdare38.Game
 import com.gmail.sintinium.ludumdare38.game
 import com.gmail.sintinium.ludumdare38.util.PlanetMath
 
-class GuardianBullet(world: World, entityId: Int, startAngle: Float, var targetPosition: Vector2, height: Float) : BaseBullet(world, entityId, startAngle, 500f, 1, 500f) {
+class GuardianBullet(world: World, entityId: Int, startAngle: Float, var targetPosition: Vector2, height: Float) : BaseBullet(world, entityId, startAngle, 750f, 1, 300f) {
 
     private val texture = game.textureAtlas.findRegion(Game.EYEBULLET)
     private var position = PlanetMath.positionFromAngle(angle, height + 70f)

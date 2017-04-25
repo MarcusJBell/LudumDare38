@@ -1,16 +1,20 @@
 package com.gmail.sintinium.ludumdare38.ecs.system
 
 import com.artemis.BaseSystem
+import com.artemis.annotations.Wire
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.gmail.sintinium.ludumdare38.game
 import com.gmail.sintinium.ludumdare38.planet.planetRadius
 import com.gmail.sintinium.ludumdare38.planet.renderScale
 import com.gmail.sintinium.ludumdare38.screen.gameScreen
+import com.gmail.sintinium.ludumdare38.turret.GuardianTurret
 import com.gmail.sintinium.ludumdare38.ui.TurretFactory
 import com.gmail.sintinium.ludumdare38.ui.TurretHud
 import com.gmail.sintinium.ludumdare38.util.PlanetMath
@@ -49,6 +53,51 @@ class GuiTurretSystem(var batch: SpriteBatch) : BaseSystem() {
         val mousePos = gameScreen.worldCoordinates(Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat()))
         val angle = PlanetMath.angleFromPosition(mousePos)
         val distance2 = gameScreen.planet.centerPosition.dst2(mousePos)
+        var inAngle = true
+        if (selectedTurret != null && selectedTurret == TurretFactory.TurretType.GUARDIAN) {
+            batch.end()
+            gameScreen.shapeRenderer.projectionMatrix = gameScreen.camera.combined
+            gameScreen.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+            gameScreen.shapeRenderer.color = Color.WHITE
+            gameScreen.shapeRenderer.line(gameScreen.planet.centerPosition, PlanetMath.positionFromAngle(GuardianTurret.RANGE, GuardianTurret.HEIGHT * 5f))
+            gameScreen.shapeRenderer.line(gameScreen.planet.centerPosition, PlanetMath.positionFromAngle(360 - GuardianTurret.RANGE, GuardianTurret.HEIGHT * 5f))
+            gameScreen.shapeRenderer.end()
+
+            batch.begin()
+
+            val range =  GuardianTurret.RANGE
+            if (angle <= 180) {
+                if (angle > range) inAngle = false
+            } else {
+                if (angle < 360 - range) inAngle = false
+            }
+        } else if (selectedTurret != null) {
+            batch.end()
+            Gdx.gl.glEnable(GL20.GL_BLEND)
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
+            gameScreen.shapeRenderer.projectionMatrix = gameScreen.camera.combined
+            gameScreen.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+            gameScreen.shapeRenderer.color = Color(1f, 0f, 0f, .2f)
+            gameScreen.shapeRenderer.triangle(
+                    gameScreen.planet.centerPosition.x, gameScreen.planet.centerPosition.y,
+                    PlanetMath.positionFromAngle(180 - GuardianTurret.RANGE, GuardianTurret.HEIGHT * 5f).x, PlanetMath.positionFromAngle(180 - GuardianTurret.RANGE, GuardianTurret.HEIGHT * 5f).y,
+                    PlanetMath.positionFromAngle(180 + GuardianTurret.RANGE, GuardianTurret.HEIGHT * 5f).x, PlanetMath.positionFromAngle(180 + GuardianTurret.RANGE, GuardianTurret.HEIGHT * 5f).y
+            )
+//            gameScreen.shapeRenderer.line(gameScreen.planet.centerPosition, PlanetMath.positionFromAngle(180 - GuardianTurret.RANGE, GuardianTurret.HEIGHT * 5f))
+//            gameScreen.shapeRenderer.line(gameScreen.planet.centerPosition, PlanetMath.positionFromAngle(180 + GuardianTurret.RANGE, GuardianTurret.HEIGHT * 5f))
+            gameScreen.shapeRenderer.end()
+            Gdx.gl.glDisable(GL20.GL_BLEND)
+            batch.begin()
+
+            val range =  GuardianTurret.RANGE
+            if (PlanetMath.isAngleBetween(angle, 180 - range, 180 + range)) inAngle = false
+        }
+
+        if (!inAngle) {
+            return
+        }
+
+
         if (distance2 < planetRadius * planetRadius - 40f || Gdx.input.x > Gdx.graphics.width - TurretHud.sidebarWidth) return
         if (selectedTurret != null && selectedTurretTexture != null) {
             val position = PlanetMath.positionFromAngle(angle - 4.5f, selectedTurretTexture!!.regionHeight * renderScale)

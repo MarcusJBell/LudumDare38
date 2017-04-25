@@ -10,7 +10,7 @@ import com.gmail.sintinium.ludumdare38.game
 import com.gmail.sintinium.ludumdare38.random
 import com.gmail.sintinium.ludumdare38.util.PlanetMath
 
-class SpikeBullet(world: World, entityId: Int, startAngle: Float, var range: Float) : BaseBullet(world, entityId, startAngle, 0f, 1, 500f) {
+class SpikeBullet(world: World, entityId: Int, startAngle: Float, var range: Float) : BaseBullet(world, entityId, startAngle, 0f, 1, 2.5f) {
 
     private val spikeTextures = game.textureAtlas.findRegions(Game.SPIKES)
     private val spikes = mutableListOf<Spike>()

@@ -13,6 +13,7 @@ import com.gmail.sintinium.ludumdare38.screen.gameScreen
 class HealthSystem : IteratingSystem(Aspect.all(HealthComponent::class.java, PositionComponent::class.java)) {
 
     lateinit var mHealth: ComponentMapper<HealthComponent>
+    lateinit var soundSystem: SoundSystem
 
     override fun process(entityId: Int) {
         val cHp = mHealth[entityId]
@@ -22,6 +23,7 @@ class HealthSystem : IteratingSystem(Aspect.all(HealthComponent::class.java, Pos
 
         if (cHp.currentHealth <= 0) {
             gameScreen.world.delete(entityId)
+            soundSystem.playExplosion()
         }
     }
 }

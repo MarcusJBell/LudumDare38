@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.viewport.ScreenViewport
@@ -29,12 +30,17 @@ class GameScreen : Screen {
     var hudViewport = ScreenViewport(hudCamera)
 
     var hudBatch = SpriteBatch().also { it.projectionMatrix = hudCamera.projection }
+    var shapeRenderer = ShapeRenderer().also { it.projectionMatrix = hudCamera.projection }
 
     var planet = Planet(batch)
 
     var guiTurretSystem = GuiTurretSystem(batch)
     var coinBankSystem = CoinBankSystem()
+    var coreHealthSystem = CoreHealthSystem()
+    var soundSystem = SoundSystem()
+
     var world: World = World(WorldConfigurationBuilder().with(
+            WaveSystem(),
             StarSystem(),
             MovementSystem(),
             TurretShootSystem(),
@@ -42,9 +48,13 @@ class GameScreen : Screen {
             BulletRenderSystem(batch),
             DamageSystem(),
             HealthSystem(),
-            CoreHealthSystem(),
-            CoinDropSystem(),
+            WaveDeathSystem(),
+            coreHealthSystem,
+            CoreHealthRenderSystem(),
             guiTurretSystem,
+            NextWaveSystem(),
+            CoinDropSystem(),
+            soundSystem,
             coinBankSystem
     ).build())
 
@@ -55,7 +65,6 @@ class GameScreen : Screen {
         world.inject(entityFactory)
         gameScreen = this
         entityFactory.createCore(world)
-        entityFactory.createBlob(world)
         camera.zoom += .2f
     }
 
@@ -66,12 +75,6 @@ class GameScreen : Screen {
     }
 
     override fun render(delta: Float) {
-        if (Math.random() > .975) {
-            if (Math.random() >= .5f)
-                entityFactory.createBlob(world)
-            else
-                entityFactory.createPurpleBlob(world)
-        }
         batch.projectionMatrix = camera.combined
         batch.begin()
         world.process()
@@ -97,6 +100,7 @@ class GameScreen : Screen {
     }
 
     override fun dispose() {
+        soundSystem.disposeMusic()
     }
 
     fun worldCoordinates(screenPosition: Vector2): Vector2 {

@@ -12,7 +12,7 @@ var renderScale = 4f
 
 class Planet(var batch: SpriteBatch) {
 
-    var texture = game.textureAtlas.findRegion(Game.PLANET)!!
+    var texture = game.textureAtlas.findRegion(Game.PLANET)
     var position = Vector2()
     var centerPosition = Vector2()
 

@@ -18,8 +18,10 @@ class TurretShootSystem : IteratingSystem(Aspect.all(TurretComponent::class.java
 
     lateinit var mTurret: ComponentMapper<TurretComponent>
     lateinit var mPosition: ComponentMapper<PositionComponent>
+    lateinit var waveSystem: WaveSystem
 
     override fun process(entityId: Int) {
+        if (waveSystem.currentWave == null) return
         val enemies = world.aspectSubscriptionManager[Aspect.all(PositionComponent::class.java, EnemyComponent::class.java, HealthComponent::class.java)].entities
         val cTurret = mTurret[entityId]
         cTurret.turret.waitingTime += Gdx.graphics.deltaTime

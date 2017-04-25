@@ -13,7 +13,7 @@ import com.gmail.sintinium.ludumdare38.ui.TurretHud
 
 class CoinBankSystem : BaseSystem() {
 
-    var coins = 500000f
+    var coins = 1000f
         private set
 
     val batch by lazy { gameScreen.hudBatch }

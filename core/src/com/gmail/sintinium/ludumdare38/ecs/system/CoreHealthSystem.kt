@@ -10,7 +10,7 @@ import com.gmail.sintinium.ludumdare38.ecs.component.CoinDropComponent
 import com.gmail.sintinium.ludumdare38.ecs.component.EnemyComponent
 import com.gmail.sintinium.ludumdare38.ecs.component.PositionComponent
 import com.gmail.sintinium.ludumdare38.game
-import com.gmail.sintinium.ludumdare38.screen.gameScreen
+import com.gmail.sintinium.ludumdare38.screen.GameOverScreen
 import com.gmail.sintinium.ludumdare38.ui.TurretHud
 
 @Wire
@@ -18,9 +18,10 @@ class CoreHealthSystem : IteratingSystem(Aspect.all(PositionComponent::class.jav
 
     lateinit var mPosition: ComponentMapper<PositionComponent>
     lateinit var mCoin: ComponentMapper<CoinDropComponent>
+    lateinit var soundSystem: SoundSystem
+    lateinit var waveSystem: WaveSystem
 
-    val batch by lazy { gameScreen.hudBatch }
-
+//    var maxHealth = -1
     var maxHealth = 100
     var health = maxHealth
 
@@ -34,18 +35,11 @@ class CoreHealthSystem : IteratingSystem(Aspect.all(PositionComponent::class.jav
             health--
             cCoin?.shouldDrop = false
             world.delete(entityId)
+            soundSystem.coreExplosion()
         }
-        gameScreen.batch.end()
-        batch.projectionMatrix = gameScreen.hudCamera.combined
-        val size = width * (health.toFloat() / maxHealth.toFloat())
-        game.layout24.setText(game.font24, "$health")
-        batch.begin()
-        healthbarTexture.draw(batch, Gdx.graphics.width / 2 - size / 2f, Gdx.graphics.height - 50f, size, 25f)
-        game.font24.draw(batch, game.layout24, Gdx.graphics.width / 2f - game.layout24.width / 2f, Gdx.graphics.height - 50f / 2f - game.layout24.height / 4f)
-        batch.end()
-        gameScreen.batch.begin()
+
         if (health < 0) {
-//            game.screen = GameOverScreen()
+            game.screen = GameOverScreen(waveSystem.waveNumber)
         }
 
     }

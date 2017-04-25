@@ -18,7 +18,8 @@ class MovementSystem : IteratingSystem(Aspect.all(DirectionComponent::class.java
     override fun process(entityId: Int) {
         val cDir = mDirection[entityId]
         val cPos = mPosition[entityId]
-        cPos.angle += cDir.direction * Gdx.graphics.deltaTime
+        cPos.angle += (cDir.direction * cDir.slowDownScale) * Gdx.graphics.deltaTime
+        cDir.slowDownScale = 1f
         if (cPos.angle < 0) {
             cPos.angle += 360
         }
@@ -26,4 +27,5 @@ class MovementSystem : IteratingSystem(Aspect.all(DirectionComponent::class.java
             cPos.angle %= 360
         }
     }
+
 }

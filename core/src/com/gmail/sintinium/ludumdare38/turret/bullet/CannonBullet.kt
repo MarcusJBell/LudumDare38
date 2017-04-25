@@ -6,7 +6,7 @@ import com.gmail.sintinium.ludumdare38.Game
 import com.gmail.sintinium.ludumdare38.game
 import com.gmail.sintinium.ludumdare38.util.PlanetMath
 
-class CannonBullet(world: World, entityId: Int, startAngle: Float, direction: Int) : BaseBullet(world, entityId, startAngle, 100f, direction, 2f) {
+class CannonBullet(world: World, entityId: Int, startAngle: Float, direction: Int) : BaseBullet(world, entityId, startAngle, 100f, direction, 50f) {
 
     val cannonballTexture = game.textureAtlas.findRegion(Game.CANNONBALL)!!
     val scale = 5f

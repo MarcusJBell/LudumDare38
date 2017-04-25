@@ -29,8 +29,9 @@ class EntityFactory {
     fun createCore(world: World): Int {
         val e = world.create()
         mPosition.create(e).also {
-            it.height = -15f
+            it.height = -16f
             it.zOrder = 5f
+            it.angle += 2f
         }
         mTexture.create(e).also {
             it.texture = game.textureAtlas.findRegion(Game.CORE)
@@ -40,17 +41,24 @@ class EntityFactory {
         return e
     }
 
-    fun createBlob(world: World): Int {
+    fun createBlob(world: World, hpScale:Float, speedScale: Float, coinDropScale: Float): Int {
         val e = world.create()
         val animation = Animation<TextureRegion>(1 / 5f, game.textureAtlas.findRegions(Game.BLOB), Animation.PlayMode.LOOP)
-        createEnemy(e, animation, 50f, 10f, 5)
+        createEnemy(e, animation, 10f * speedScale, 175f * hpScale, (10f * coinDropScale).toInt())
         return e
     }
 
-    fun createPurpleBlob(world: World): Int {
+    fun createPurpleBlob(world: World, hpScale:Float, speedScale: Float, coinDropScale: Float): Int {
         val e = world.create()
         val animation = Animation<TextureRegion>(1 / 5f, game.textureAtlas.findRegions(Game.PURPLE_BLOB), Animation.PlayMode.LOOP)
-        createEnemy(e, animation, 50f, 10f, 5)
+        createEnemy(e, animation, 13f * speedScale, 100f * hpScale, (5f * coinDropScale).toInt())
+        return e
+    }
+
+    fun createBlorb(world: World, hpScale:Float, speedScale: Float, coinDropScale: Float): Int {
+        val e = world.create()
+        val animation = Animation<TextureRegion>(1 / 5f, game.textureAtlas.findRegions(Game.BLORB), Animation.PlayMode.LOOP)
+        createEnemy(e, animation, 5f * speedScale, 300f * hpScale, (25f * coinDropScale).toInt())
         return e
     }
 
@@ -78,6 +86,7 @@ class EntityFactory {
         }
         mCoin.create(entityId).also {
             it.dropAmount = coinDropAmount
+            it.shouldDrop = true
         }
         mEnemy.create(entityId)
     }
@@ -94,11 +103,22 @@ class EntityFactory {
         return e
     }
 
+    fun createQuake(world: World, angle: Float): Int {
+        val e = world.create()
+        createTurret(e, angle, Animation<TextureRegion>(1/2f, game.textureAtlas.findRegions(TurretFactory.TurretType.QUAKE.textureName)), QuakeTurret(angle).also { it.shootDelay = 15f })
+        return e
+    }
+
+    fun createQuakeBullet(world: World, angle: Float): Int {
+        val e = world.create()
+        createBullet(world, e, angle, QuakeBullet(world, e, angle, 400f, getDir(angle)))
+        return e
+    }
+
     fun createGuardian(world: World, angle: Float): Int {
         val e = world.create()
-        createTurret(e, angle, game.textureAtlas.findRegion(TurretFactory.TurretType.GUARDIAN.textureName), GuardianTurret(angle).also { it.shootDelay = 1f }, 30f, false, true)
-        val turret = mTurret[e].turret as GuardianTurret
-        mPosition[e].height = turret.height
+        createTurret(e, angle, game.textureAtlas.findRegion(TurretFactory.TurretType.GUARDIAN.textureName), GuardianTurret(angle).also { it.shootDelay = 30f; it.waitingTime = it.shootDelay }, GuardianTurret.RANGE, false, true)
+        mPosition[e].height = GuardianTurret.HEIGHT
         return e
     }
 
@@ -110,7 +130,7 @@ class EntityFactory {
 
     fun createSpikeTurret(world: World, angle: Float): Int {
         val e = world.create()
-        createTurret(e, angle, game.textureAtlas.findRegion(TurretFactory.TurretType.SPIKE.textureName), SpikeTurret(angle).also { it.shootDelay = 2f }, 1f, false, true)
+        createTurret(e, angle, game.textureAtlas.findRegion(TurretFactory.TurretType.SPIKE.textureName), SpikeTurret(angle).also { it.shootDelay = 2.5f }, 5f, false, true)
         return e
     }
 
@@ -141,6 +161,27 @@ class EntityFactory {
             it.texture = textureRegion
             it.originX = it.texture!!.regionWidth / 2f
             it.xOffset = -it.texture!!.regionWidth / 2f
+        }
+        mDirection.create(entityId).also {
+            it.direction = getDir(angle).toFloat()
+        }
+        mTurret.create(entityId).also {
+            it.turret = turret
+            it.range = range
+            it.sided = sided
+            it.usesRange = usesRange
+        }
+    }
+
+    private fun createTurret(entityId: Int, angle: Float, animation: Animation<TextureRegion>, turret: BaseTurret, range: Float = 0f, sided: Boolean = true, usesRange: Boolean = false) {
+        mPosition.create(entityId).also {
+            it.angle = angle
+            it.zOrder = -1f
+        }
+        mTexture.create(entityId).also {
+            it.animation = animation
+            it.originX = it.animation!!.keyFrames.first().regionWidth / 2f
+            it.xOffset = -it.animation!!.keyFrames.first().regionWidth / 2f
         }
         mDirection.create(entityId).also {
             it.direction = getDir(angle).toFloat()

@@ -3,11 +3,15 @@ package com.gmail.sintinium.ludumdare38.ecs.system
 import com.artemis.BaseSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
+import com.gmail.sintinium.ludumdare38.Game
 import com.gmail.sintinium.ludumdare38.game
+import com.gmail.sintinium.ludumdare38.planet.renderScale
 import com.gmail.sintinium.ludumdare38.random
 import com.gmail.sintinium.ludumdare38.screen.gameScreen
+import com.gmail.sintinium.ludumdare38.util.PlanetMath
 
 class StarSystem : BaseSystem() {
 
@@ -19,6 +23,12 @@ class StarSystem : BaseSystem() {
     val maxStars = 500
 
     val batch by lazy { gameScreen.hudBatch }
+
+    val portalOpenTextures = game.textureAtlas.findRegions(Game.PORTALOPEN)
+    val portalStayTextures = game.textureAtlas.findRegions(Game.PORTALSTAY)
+
+    var portalAnimation: Animation<TextureRegion>? = null
+    var elapsed = 0f
 
     init {
         for (i in 0..maxStars / 4) {
@@ -53,7 +63,38 @@ class StarSystem : BaseSystem() {
 
         batch.end()
         gameScreen.batch.begin()
+
+        drawPortal()
         gameScreen.planet.render(Gdx.graphics.deltaTime)
+    }
+
+    fun drawPortal() {
+        if (portalAnimation == null) return
+        elapsed += Gdx.graphics.deltaTime
+        val texture = portalAnimation!!.getKeyFrame(elapsed)
+        val position = PlanetMath.positionFromAngle(180f, texture.regionHeight.toFloat() + 10f)
+        val frame = portalAnimation!!.getKeyFrameIndex(elapsed)
+        if (frame > 6 && portalAnimation!!.playMode == Animation.PlayMode.NORMAL) {
+            portalAnimation = Animation(.075f, portalStayTextures, Animation.PlayMode.LOOP)
+        }
+
+        gameScreen.batch.draw(texture.texture, position.x - texture.regionWidth / 2f, position.y - texture.regionHeight,
+                texture.regionWidth.toFloat() / 2f, texture.regionHeight.toFloat() / 2f,
+                texture.regionWidth.toFloat(), texture.regionHeight.toFloat(),
+                renderScale, renderScale, 180f,
+                texture.regionX, texture.regionY, texture.regionWidth, texture.regionHeight,
+                false, false
+        )
+    }
+
+    fun openPortal() {
+        elapsed = 0f
+        portalAnimation = Animation(.075f, portalOpenTextures, Animation.PlayMode.NORMAL)
+    }
+
+    fun closePortal() {
+        elapsed = 7 * .075f
+        portalAnimation = Animation(.075f, portalOpenTextures, Animation.PlayMode.REVERSED)
     }
 
     fun spawnStar() {

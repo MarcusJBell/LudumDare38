@@ -29,14 +29,20 @@ class Game : com.badlogic.gdx.Game() {
         const val PLANET = "planet"
         const val BLOB = "Blobenemy_Pulsing"
         const val PURPLE_BLOB = "Purpleblob"
+        const val BLORB = "Blorb"
         const val CORE = "planetcore"
         const val TESLA_BEAM = "Teslabeam"
+        const val QUAKE_WAVE = "Seismicwave"
         const val SPIKES = "Spikeanimation"
         const val CANNONBALL = "Cannonball"
         const val EYEBULLET = "Eyeturretbullet"
         const val COIN = "Coin"
         const val COIN_SHEEN = "Coin_Sheen"
         const val HEALTHBAR = "Healthbar"
+        const val UI = "UserInterface"
+        const val PLAYBUTTON = "Playbutton"
+        const val PORTALOPEN = "Portal_Portal"
+        const val PORTALSTAY = "Portalstay"
     }
 
     init {

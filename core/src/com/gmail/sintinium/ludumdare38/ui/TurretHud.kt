@@ -15,7 +15,7 @@ import kotlin.properties.Delegates
 class TurretHud(val turretSystem: GuiTurretSystem) {
 
     val batch by lazy { gameScreen.hudBatch }
-    val debugTexture = game.textureAtlas.findRegion(Game.DEBUG)!!
+    val debugTexture = game.textureAtlas.createPatch(Game.UI)
     val tooltipHud = ShopTooltipHud()
 
     var buttons = mutableSetOf<TurrentButton>()
@@ -35,24 +35,29 @@ class TurretHud(val turretSystem: GuiTurretSystem) {
         onResize()
         createButtons()
         for (i in TurretFactory.TurretType.values()) {
-            turretTextures.put(i.textureName, game.textureAtlas.findRegion(i.textureName))
+            if (i == TurretFactory.TurretType.QUAKE) {
+                turretTextures.put(i.textureName, game.textureAtlas.findRegions(i.textureName).first())
+            } else {
+                turretTextures.put(i.textureName, game.textureAtlas.findRegion(i.textureName))
+            }
         }
     }
 
     fun createButtons() {
         for ((i, t) in TurretFactory.TurretType.values().withIndex()) {
-            buttons.add(TurrentButton(Vector2(xButton - TurrentButton.buttonSize /2f, yButton - TurrentButton.buttonSize * i - (i * buttonSpacing) - (TurrentButton.buttonSize + buttonSpacing) - topPadding), t))
+            buttons.add(TurrentButton(Vector2(xButton - TurrentButton.buttonSize / 2f, yButton - TurrentButton.buttonSize * i - (i * buttonSpacing) - (TurrentButton.buttonSize + buttonSpacing) - topPadding), t))
         }
     }
 
     /**
      * @return returns true if a gui element is clicked
      */
-    fun render() : Boolean {
+    fun render(): Boolean {
         var clicked = false
-        batch.color = Color.DARK_GRAY
+        batch.color = Color(.5f, .5f, .5f, 1f)
 
-        batch.draw(debugTexture, Gdx.graphics.width - sidebarWidth, 0f, sidebarWidth, Gdx.graphics.height.toFloat())
+//        batch.draw(debugTexture, Gdx.graphics.width - sidebarWidth, 0f, sidebarWidth, Gdx.graphics.height.toFloat())
+        debugTexture.draw(batch, Gdx.graphics.width - sidebarWidth, 0f, sidebarWidth, Gdx.graphics.height.toFloat())
         batch.color = Color.LIGHT_GRAY
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !wasDown) {
@@ -71,12 +76,17 @@ class TurretHud(val turretSystem: GuiTurretSystem) {
 
 
         for (b in buttons) {
-            batch.draw(debugTexture, b.rectangle.x, b.rectangle.y, b.rectangle.width, b.rectangle.height)
+//            batch.draw(debugTexture, b.rectangle.x, b.rectangle.y, b.rectangle.width, b.rectangle.height)
+            if (gameScreen.coinBankSystem.coins < b.turretType.turretPrice) {
+                batch.color = Color(1f, .4f, .4f, .8f)
+            }
+            debugTexture.draw(batch, b.rectangle.x, b.rectangle.y, b.rectangle.width, b.rectangle.height)
             val texture = turretTextures[b.turretType.textureName]!!
             val scale = if (texture.regionHeight > texture.regionWidth) b.rectangle.height / texture.regionHeight else b.rectangle.width / texture.regionWidth
-            val width = texture.regionWidth * scale
-            val height = texture.regionHeight * scale
-            batch.draw(texture, b.rectangle.x + b.rectangle.width / 2 - width / 2, b.rectangle.y, width, height)
+            val width = texture.regionWidth * scale - 8
+            val height = texture.regionHeight * scale - 8
+            batch.draw(texture, b.rectangle.x + b.rectangle.width / 2 - width / 2, b.rectangle.y + b.rectangle.height / 2 - height / 2, width, height)
+//            debugTexture.draw(batch, b.rectangle.x + b.rectangle.width / 2 - width / 2, b.rectangle.y, width, height)
         }
         showTooltip()
 
@@ -99,7 +109,7 @@ class TurretHud(val turretSystem: GuiTurretSystem) {
         yButton = Gdx.graphics.height.toFloat()
 
         for ((i, b) in buttons.withIndex()) {
-            b.rectangle.set(xButton - TurrentButton.buttonSize /2f, yButton - TurrentButton.buttonSize * i - (i * buttonSpacing) - (TurrentButton.buttonSize + buttonSpacing) - topPadding, b.rectangle.width, b.rectangle.height)
+            b.rectangle.set(xButton - TurrentButton.buttonSize / 2f, yButton - TurrentButton.buttonSize * i - (i * buttonSpacing) - (TurrentButton.buttonSize + buttonSpacing) - topPadding, b.rectangle.width, b.rectangle.height)
         }
     }
 
