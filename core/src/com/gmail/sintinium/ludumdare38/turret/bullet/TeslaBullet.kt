@@ -20,6 +20,7 @@ class TeslaBullet(world: World, entityId: Int, startAngle: Float, speed: Float, 
 
     private var segments = mutableListOf<TeslaSegment>()
     private val segmentAnimationTextures = game.textureAtlas.findRegions(Game.TESLA_BEAM)
+    var animation = Animation<TextureRegion>(1/10f, segmentAnimationTextures, Animation.PlayMode.LOOP)
 
     override fun moveForward() {
         var oldSpeed = speed
@@ -66,7 +67,7 @@ class TeslaBullet(world: World, entityId: Int, startAngle: Float, speed: Float, 
         }
         for ((i, s) in segments.withIndex()) {
             s.elapsedTime += Gdx.graphics.deltaTime
-            val texture = s.animation.getKeyFrame(s.elapsedTime, true)
+            val texture = animation.getKeyFrame(s.elapsedTime, true)
             val position = PlanetMath.positionFromAngle(s.angle, texture.regionHeight / 2f)
 
             batch.draw(texture.texture, position.x - texture.regionWidth, position.y - texture.regionHeight,
@@ -82,7 +83,6 @@ class TeslaBullet(world: World, entityId: Int, startAngle: Float, speed: Float, 
 
     inner class TeslaSegment(var angle: Float) {
         var elapsedTime = 0f
-        var animation = Animation<TextureRegion>(1/10f, segmentAnimationTextures, Animation.PlayMode.LOOP)
     }
 
 }

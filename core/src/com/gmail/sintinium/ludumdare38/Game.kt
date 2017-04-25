@@ -1,6 +1,7 @@
 package com.gmail.sintinium.ludumdare38
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -9,8 +10,16 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.gmail.sintinium.ludumdare38.screen.GameScreen
+import java.io.PrintWriter
 import java.util.*
 import kotlin.properties.Delegates
+import com.sun.deploy.uitoolkit.ToolkitStore.dispose
+import com.badlogic.gdx.graphics.PixmapIO
+import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.utils.BufferUtils
+import com.badlogic.gdx.utils.ScreenUtils
+
+
 
 
 var game by Delegates.notNull<Game>()
@@ -66,6 +75,14 @@ class Game : com.badlogic.gdx.Game() {
         initFont()
         textureAtlas = TextureAtlas(Gdx.files.internal("assets/packed/textures.atlas"))
         setScreen(GameScreen())
+
+//        Thread.setDefaultUncaughtExceptionHandler(object : Thread.UncaughtExceptionHandler {
+//            override fun uncaughtException(t: Thread, e: Throwable) {
+//                val writer = PrintWriter("ERROR.log", "UTF-8")
+//                writer.println(e.message)
+//                writer.close()
+//            }
+//        })
     }
 
     override fun render() {
@@ -73,6 +90,13 @@ class Game : com.badlogic.gdx.Game() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
 
         super.render()
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F12)) {
+            val pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.backBufferWidth, Gdx.graphics.backBufferHeight, true)
+            val pixmap = Pixmap(Gdx.graphics.backBufferWidth, Gdx.graphics.backBufferHeight, Pixmap.Format.RGBA8888)
+            BufferUtils.copy(pixels, 0, pixmap.pixels, pixels.size)
+            PixmapIO.writePNG(Gdx.files.absolute("D:/Users/sinti/Documents/Projects/LibGDX/LudumDare38/screenshot.png"), pixmap)
+            pixmap.dispose()
+        }
     }
 
     override fun dispose() {

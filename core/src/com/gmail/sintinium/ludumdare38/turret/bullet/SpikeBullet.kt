@@ -14,6 +14,7 @@ class SpikeBullet(world: World, entityId: Int, startAngle: Float, var range: Flo
 
     private val spikeTextures = game.textureAtlas.findRegions(Game.SPIKES)
     private val spikes = mutableListOf<Spike>()
+    var animation = Animation<TextureRegion>(1/10f, spikeTextures, Animation.PlayMode.LOOP)
 
     init {
         for (i in 0..10) {
@@ -36,7 +37,7 @@ class SpikeBullet(world: World, entityId: Int, startAngle: Float, var range: Flo
         var done = false
         for ((i, s) in spikes.withIndex()) {
             s.elapsedTime += Gdx.graphics.deltaTime
-            val texture = s.animation.getKeyFrame(s.elapsedTime, true)
+            val texture = animation.getKeyFrame(s.elapsedTime, true)
             val position = PlanetMath.positionFromAngle(s.angle, texture.regionHeight / 2f)
 
             batch.draw(texture.texture, position.x - texture.regionWidth, position.y - texture.regionHeight,
@@ -47,7 +48,7 @@ class SpikeBullet(world: World, entityId: Int, startAngle: Float, var range: Flo
                     false, false
             )
             if (!done) {
-                done = s.animation.isAnimationFinished(s.elapsedTime)
+                done = animation.isAnimationFinished(s.elapsedTime)
             }
         }
         if (done) {
@@ -57,7 +58,6 @@ class SpikeBullet(world: World, entityId: Int, startAngle: Float, var range: Flo
 
     inner class Spike(var angle: Float) {
         var elapsedTime = 0f
-        var animation = Animation<TextureRegion>(1/10f, spikeTextures, Animation.PlayMode.LOOP)
     }
 
 }

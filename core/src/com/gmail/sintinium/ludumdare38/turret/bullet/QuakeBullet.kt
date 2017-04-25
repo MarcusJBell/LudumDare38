@@ -19,7 +19,7 @@ class QuakeBullet(world: World, entityId: Int, startAngle: Float, speed: Float, 
     var fadeRate = .11f
 
     private var segments = mutableListOf<QuakeSegment>()
-    private val segmentAnimationTexture = game.textureAtlas.findRegion(Game.QUAKE_WAVE)
+    private val texture = game.textureAtlas.findRegion(Game.QUAKE_WAVE)
 
     override fun moveForward() {
         var oldSpeed = speed
@@ -66,7 +66,6 @@ class QuakeBullet(world: World, entityId: Int, startAngle: Float, speed: Float, 
         }
         for ((i, s) in segments.withIndex()) {
             s.elapsedTime += Gdx.graphics.deltaTime * 5
-            val texture = s.texture
             val position = PlanetMath.positionFromAngle(s.angle, texture.regionHeight / 2f + (4f * (Math.sin(s.elapsedTime.toDouble()).toFloat())))
 
             batch.draw(texture.texture, position.x - texture.regionWidth, position.y - texture.regionHeight,
@@ -82,7 +81,6 @@ class QuakeBullet(world: World, entityId: Int, startAngle: Float, speed: Float, 
 
     inner class QuakeSegment(var angle: Float) {
         var elapsedTime = random.nextFloat() + random.nextInt(360)
-        var texture = segmentAnimationTexture
     }
 
 }

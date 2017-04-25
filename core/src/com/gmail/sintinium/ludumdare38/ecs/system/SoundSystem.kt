@@ -6,17 +6,14 @@ import com.badlogic.gdx.Gdx
 class SoundSystem : BaseSystem() {
 
     companion object {
-        const val MAINSONG = "maintrack.wav"
+        const val MAINSONG = "maintrack_01.mp3"
         const val EXPLOSION = "explosion.wav"
     }
 
-    var music = Gdx.audio.newMusic(Gdx.files.internal("music/$MAINSONG")).also { it.isLooping = true; it.volume = .8f }
+    var music = Gdx.audio.newMusic(Gdx.files.internal("music/$MAINSONG")).also { it.isLooping = true; it.volume = .8f ; it.play() }
     var sound = Gdx.audio.newSound(Gdx.files.internal("music/$EXPLOSION"))
 
     override fun processSystem() {
-        if (!music.isPlaying) {
-            music.play()
-        }
     }
 
     fun playExplosion() {
@@ -28,7 +25,7 @@ class SoundSystem : BaseSystem() {
     }
 
     fun disposeMusic() {
-//        music.dispose()
+        music.dispose()
         sound.dispose()
     }
 
